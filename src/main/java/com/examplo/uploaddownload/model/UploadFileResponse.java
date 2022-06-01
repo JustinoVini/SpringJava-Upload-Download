@@ -6,7 +6,7 @@ public class UploadFileResponse {
 	private long size;
 	private String fileDownloadUri;
 
-	public UploadFileResponse(String fileType, String fileName, long size, String fileDownloadUri) {
+	public UploadFileResponse(String fileName, String fileDownloadUri, String fileType, long size) {
 		super();
 		this.fileType = fileType;
 		this.fileName = fileName;
