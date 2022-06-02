@@ -3,16 +3,15 @@ package com.examplo.uploaddownload.controllers;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.http.HttpHeaders;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,20 +58,21 @@ public class FileController {
 				.collect(Collectors.toList());
 	}
 	
-	// Chamada da annotation get
+	// Criar a estrutura lógica que possibilitará  o download de arquivos
 	@GetMapping("/downloadFile/{fileName:.+}")
 	public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request){
-		
+		// Criar uma propriedade para acessar o método que executa os downloads
 		Resource resource = fileStorageService.loadFileAsResource(fileName);
-		
+		// Tentativa de determinar um conteudo do arquivo.
 		String contentType = null;
 		
 		try {
 			contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
 		} catch (IOException ex) {
-			logger.info("Mensagem de erro");
+			logger.info("Não foi possivel determinar o tipo do arquivo.");
 		}
 		
+		// verificar se o tipo de conteudo não pode ser verificada porque a variavel não conseguiu acessa-lá
 		if(contentType == null) {
 			contentType = "application/octet-stream";
 		}
